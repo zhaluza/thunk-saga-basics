@@ -1,26 +1,23 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './sass/app.scss';
+import { connect } from 'react-redux';
+import fetchPics from './actions/fetchPics';
 
-function App() {
+const mapStateToProps = (state) => ({
+  pics: state.pics.pics,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchPics: () => dispatch(fetchPics()),
+});
+
+const App = (props) => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <button onClick={props.fetchPics}>Get cat</button>
+      {props.pics.length > 0 && <img alt="cat pic!" src={props.pics} />}
     </div>
   );
-}
+};
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
