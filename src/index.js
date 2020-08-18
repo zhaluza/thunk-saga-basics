@@ -2,13 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
+import createSagaMiddleware from 'redux-saga';
+import watchFetchMorePicsSaga from './saga/fetchMorePics';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './reducers/index';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunkMiddleware)));
+const sagaMiddleware = createSagaMiddleware();
+
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(thunkMiddleware, sagaMiddleware))
+);
+
+sagaMiddleware.run(watchFetchMorePicsSaga);
 
 ReactDOM.render(
   <React.StrictMode>
